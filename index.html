@@ -14,10 +14,13 @@ function format_date(my_date) {
 
 var wevedonethisbefore = false
 update_users = function() {
+  var user;
   PDJS.api({
-    res: "users/on_call?include[]=contact_methods",
+    res: "/oncalls?include[]=users",
     success: function(data) {
-      jQuery.each( data.users, function(index, user){
+      jQuery.each( data.oncalls, function(index, oncall){
+        user = oncall.user;
+        if (typeof user == 'undefined') { return true; }
         $("#users").append(
           '<table border=1 bordercolor="#cccccc" dashed><tr><td><table border=0 cellpadding=3 cellspacing=0 width=440><tr><td width=80><div id="'+user.id+'"><div><img src="'+user.avatar_url+'"></td><td><h2><a href="http://'+pdjs_settings.subdomain+'.pagerduty.com/users/'+user.id+'">'+user.name+'</a></td></tr><tr><td colspan=2></h2></div><div id="'+user.id+"_contact_methods"+'"><h4>Contact Methods:</h4></div></td></tr><tr><td colspan=2><div id="'+user.id+"_on_call"+'"</div></td></tr></table></td></tr></table><br>'
         )
